@@ -128,12 +128,17 @@ async def upload_file(file: UploadFile = File(...)):
 
     return {
         "filename": file.filename,
-        "message": "File uploaded, processed, and validated",
-        "found_sections": found_sections,
-        "missing_sections": missing_sections,
-        "completeness_score": score,
-        "status": status,
-        "sentinel_alerts": alerts,
+        #"message": "File uploaded, processed, and validated",
+        "document_summary":{
+            "completeness_score": score,
+            "status": status,
+            "found_sections": found_sections,
+            "missing_sections": missing_sections
+        }, 
+        "sentinel":{
+            "sentinel_alerts": alerts
+        }, 
+
         "ai_analysis": ai_result,
         #"path": file_path,
         "text_preview": extracted_text[:1000] 
