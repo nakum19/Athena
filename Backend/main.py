@@ -127,19 +127,16 @@ async def upload_file(file: UploadFile = File(...)):
     ai_result = analyze_with_ai(extracted_text)
 
     return {
-        "filename": file.filename,
-        #"message": "File uploaded, processed, and validated",
-        "document_summary":{
-            "completeness_score": score,
-            "status": status,
-            "found_sections": found_sections,
-            "missing_sections": missing_sections
-        }, 
-        "sentinel":{
-            "sentinel_alerts": alerts
-        }, 
-
-        "ai_analysis": ai_result,
-        #"path": file_path,
-        "text_preview": extracted_text[:1000] 
-    }
+    "filename": file.filename,
+    "summary": {
+        "completeness_score": score,
+        "status": status,
+        "found_sections": found_sections,
+        "missing_sections": missing_sections
+    },
+    "sentinel": {
+        "alerts": alerts
+    },
+    "ai_analysis": ai_result,
+    "text_preview": extracted_text[:1000]
+}
