@@ -4,6 +4,7 @@ function App() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleUpload = async () => {
     if (!file) return;
@@ -13,17 +14,26 @@ function App() {
 
     setLoading(true);
     setResult(null);
+    setError(null);
 
     try {
       const response = await fetch("http://127.0.0.1:8000/upload", {
-        method: "POST",
-        body: formData,
+      method: "POST",
+      body: formData,
       });
 
+      if (!response.ok) {
+      throw new Error("Server error");
+      }
+
       const data = await response.json();
+
+      console.log(data);
+
       setResult(data);
     } catch (error) {
       console.error("Upload failed:", error);
+      setError("Upload failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -36,14 +46,19 @@ function App() {
 
       <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
         <input type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
-        <button onClick={handleUpload} style={{ marginLeft: "1rem", padding: "0.5rem 1rem" }}>
-          Analyze Document
+        <button 
+          onClick={handleUpload} 
+          disabled={loading}
+          style={{ marginLeft: "1rem", padding: "0.5rem 1rem" }}
+        >
+          {loading ? "Processing..." : "Analyze Document"}
         </button>
       </div>
 
       {loading && <p>Analyzing document...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {result && (
+      {result && result.summary && result.sentinel && (
         <div style={{ marginTop: "2rem" }}>
           <h2>Analysis Result</h2>
 
@@ -57,16 +72,20 @@ function App() {
           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
             <h3>Found Sections</h3>
             <ul>
-              {result.summary.found_sections.map((section, index) => (
-                <li key={index}>{section}</li>
-              ))}
+              {result.summary?.found_sections?.length > 0 ? (
+                result.summary.found_sections.map((section, index) => (
+                  <li key={index}>{section}</li>
+                ))
+              ) : (
+                <p>No sections found</p>
+              )}
             </ul>
           </div>
 
           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
             <h3>Missing Sections</h3>
             <ul>
-              {result.summary.missing_sections.map((section, index) => (
+              {result.summary?.missing_sections?.map((section, index) => (
                 <li key={index}>{section}</li>
               ))}
             </ul>
@@ -75,7 +94,7 @@ function App() {
           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
             <h3>Sentinel Alerts</h3>
             <ul>
-              {result.sentinel.alerts.map((alert, index) => (
+              {result.sentinel?.alerts?.map((alert, index) => (
                 <li key={index}>{alert}</li>
               ))}
             </ul>
@@ -83,7 +102,7 @@ function App() {
 
           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
             <h3>AI Analysis</h3>
-            <pre style={{ whiteSpace: "pre-wrap" }}>{result.ai_analysis}</pre>
+            <pre style={{ whiteSpace: "pre-wrap" }}>{result.ai_analysis || "No analysis available"}</pre>
           </div>
 
           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px" }}>
