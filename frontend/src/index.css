@@ -50,6 +50,10 @@
   }
 }
 
+#mainTitle{
+  color:white;
+  font-size:xx-large;
+}
 body {
   margin: 0;
 }

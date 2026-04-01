@@ -1,122 +1,3 @@
-// import { useState } from "react";
-
-// function App() {
-//   const [file, setFile] = useState(null);
-//   const [result, setResult] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-
-//   const handleUpload = async () => {
-//     if (!file) return;
-
-//     const formData = new FormData();
-//     formData.append("file", file);
-
-//     setLoading(true);
-//     setResult(null);
-//     setError(null);
-
-//     try {
-//       const response = await fetch("http://127.0.0.1:8000/upload", {
-//       method: "POST",
-//       body: formData,
-//       });
-
-//       if (!response.ok) {
-//       throw new Error("Server error");
-//       }
-
-//       const data = await response.json();
-
-//       console.log(data);
-
-//       setResult(data);
-//     } catch (error) {
-//       console.error("Upload failed:", error);
-//       setError("Upload failed. Please try again.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div style={{ fontFamily: "Arial, sans-serif", padding: "2rem", maxWidth: "900px", margin: "0 auto" }}>
-//       <h1>Athena</h1>
-//       <p>AI-Powered Finance & Risk Analytics Platform</p>
-
-//       <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-//         <input type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
-//         <button 
-//           onClick={handleUpload} 
-//           disabled={loading}
-//           style={{ marginLeft: "1rem", padding: "0.5rem 1rem" }}
-//         >
-//           {loading ? "Processing..." : "Analyze Document"}
-//         </button>
-//       </div>
-
-//       {loading && <p>Analyzing document...</p>}
-//       {error && <p style={{ color: "red" }}>{error}</p>}
-
-//       {result && result.summary && result.sentinel && (
-//         <div style={{ marginTop: "2rem" }}>
-//           <h2>Analysis Result</h2>
-
-//           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-//             <h3>Document</h3>
-//             <p><strong>Filename:</strong> {result.filename}</p>
-//             <p><strong>Completeness Score:</strong> {result.summary.completeness_score}%</p>
-//             <p><strong>Status:</strong> {result.summary.status}</p>
-//           </div>
-
-//           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-//             <h3>Found Sections</h3>
-//             <ul>
-//               {result.summary?.found_sections?.length > 0 ? (
-//                 result.summary.found_sections.map((section, index) => (
-//                   <li key={index}>{section}</li>
-//                 ))
-//               ) : (
-//                 <p>No sections found</p>
-//               )}
-//             </ul>
-//           </div>
-
-//           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-//             <h3>Missing Sections</h3>
-//             <ul>
-//               {result.summary?.missing_sections?.map((section, index) => (
-//                 <li key={index}>{section}</li>
-//               ))}
-//             </ul>
-//           </div>
-
-//           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-//             <h3>Sentinel Alerts</h3>
-//             <ul>
-//               {result.sentinel?.alerts?.map((alert, index) => (
-//                 <li key={index}>{alert}</li>
-//               ))}
-//             </ul>
-//           </div>
-
-//           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-//             <h3>AI Analysis</h3>
-//             <pre style={{ whiteSpace: "pre-wrap" }}>{result.ai_analysis || "No analysis available"}</pre>
-//           </div>
-
-//           <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px" }}>
-//             <h3>Text Preview</h3>
-//             <pre style={{ whiteSpace: "pre-wrap" }}>{result.text_preview}</pre>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import { useState } from "react";
 import "./App.css";
 
@@ -162,28 +43,30 @@ function App() {
   return (
     <div className="app-shell">
       <header className="hero">
+        <div className="hero-content">
         <div>
-          <p className="eyebrow">Athena Platform</p>
-          <h1>Athena</h1>
+          {/*<p className="eyebrow">Athena Platform</p> */} 
+          <h2 id="mainTitle">ATHENA</h2>
           <p className="hero-subtitle">
             AI-Powered Finance &amp; Risk Analytics Platform
           </p>
-          <p className="hero-description">
+          {/*<p className="hero-description">
             Ingest, validate, and monitor model governance documents across
             banking workflows.
-          </p>
+          </p>*/}
         </div>
 
         <div className="hero-badges">
           <span className="badge live">Live Module: Risk Rating Analysis</span>
           <span className="badge muted">Planned Modules: Validation, Fraud, Compliance</span>
         </div>
+        </div>
       </header>
 
       <main className="dashboard">
         <aside className="sidebar">
           <div className="card">
-            <h2>Document Intake</h2>
+            <h2>Upload Document</h2>
             <p className="muted-text">
               Upload a banking risk document and run Athena’s analysis pipeline.
             </p>
@@ -250,24 +133,6 @@ function App() {
               </div>
             </div>
           </div>
-
-          <div className="card">
-            <h2>Athena Expansion Roadmap</h2>
-            <div className="roadmap-grid">
-              <div className="roadmap-item">
-                <h4>Validation Review Engine</h4>
-                <p>AI-assisted validation of model methodology and testing evidence.</p>
-              </div>
-              <div className="roadmap-item">
-                <h4>Fraud Governance Review</h4>
-                <p>Documentation checks for fraud risk models and monitoring plans.</p>
-              </div>
-              <div className="roadmap-item">
-                <h4>Compliance Evidence Scanner</h4>
-                <p>Automated review of policy, audit, and control documentation.</p>
-              </div>
-            </div>
-          </div>
         </aside>
 
         <section className="main-panel">
@@ -304,21 +169,6 @@ function App() {
 
           {result && (
             <>
-              <div className="card">
-                <h2>Analysis Overview</h2>
-                <div className="overview-grid">
-                  <div>
-                    <p className="field-label">Filename</p>
-                    <p>{result.filename}</p>
-                  </div>
-                  <div>
-                    <p className="field-label">Status</p>
-                    <p className={getStatusClass(result.summary.status)}>
-                      {result.summary.status}
-                    </p>
-                  </div>
-                </div>
-              </div>
 
               <div className="results-grid">
                 <div className="card">
